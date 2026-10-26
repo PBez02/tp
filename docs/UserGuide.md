@@ -243,7 +243,7 @@ Format: `note INDEX nt/NOTE`
 * The index refers to the number shown in the displayed contact list.
 * The index must be a positive integer and refer to a displayed contact.
 * `nt/NOTE` is required and cannot be blank.
-* The note may contain spaces.
+* The note may contain spaces and command-like text such as `n/` or `a/`. It must not exceed 2,000 characters.
 * New notes are appended to the contact's existing interaction history. Existing notes are not replaced.
 * Interaction notes remain attached to the contact when other contact details are edited or when a follow-up is marked as completed.
 
@@ -264,15 +264,15 @@ Format: `history INDEX`
 
 * The index refers to the number shown in the displayed contact list.
 * The index must be a positive integer and refer to a displayed contact.
-* Notes are shown in the order they were recorded, with the oldest note first.
+* Notes are shown newest first, with their creation date and time. Use the number shown here to delete a note.
 * `history` does not modify the contact or its notes.
 
 If notes have been recorded, the result is shown in this format:
 
 ```text
 Interaction history for John Tan:
-1. Called client
-2. Discussed renewal options
+1. [26-10-2026 14:00] Discussed renewal options
+2. [25-10-2026 09:30] Called client
 ```
 
 If the contact has no interaction notes, the result is:
@@ -283,6 +283,18 @@ Examples:
 
 * `history 1`
 * `find John` followed by `history 1` shows the interaction history of the first displayed matching contact.
+
+### Deleting an interaction note: `deletenote`
+
+Deletes one note from a contact's interaction history.
+
+Format: `deletenote CONTACT_INDEX NOTE_INDEX`
+
+* `CONTACT_INDEX` refers to the currently displayed contact list.
+* `NOTE_INDEX` refers to the numbered, newest-first list shown by `history CONTACT_INDEX`.
+* Both indexes must be positive integers. The contact and its other notes remain unchanged.
+
+Example: `history 1` followed by `deletenote 1 2` removes the second note shown for the first displayed contact.
 
 ### Viewing follow-ups that are due: `due`
 
@@ -366,6 +378,7 @@ Action     | Format, Examples
 **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [st/STATUS] [f/FOLLOW_UP_DATE] [t/TAG]...` <br> e.g., `add n/Sarah Lim p/98765432 e/sarahlim@example.com a/10 Tampines St 11 st/PROSPECT f/25-12-2026 t/referral`
 **Clear**  | `clear` to request confirmation<br>`clear confirm` to clear all contacts
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete note** | `deletenote CONTACT_INDEX NOTE_INDEX`<br> e.g., `deletenote 1 2`
 **Done**   | `done INDEX`<br> e.g., `done 1`
 **Due**    | `due [DAYS]`<br> e.g., `due 7`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [st/STATUS] [f/FOLLOW_UP_DATE] [t/TAG]...`<br> e.g., `edit 2 n/James Lee st/CLIENT f/25-12-2026`
